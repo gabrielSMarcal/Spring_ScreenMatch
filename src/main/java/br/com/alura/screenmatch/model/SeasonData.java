@@ -6,6 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record SeasonData(@JsonAlias("Season") Integer temporada,
+public record SeasonData(@JsonAlias("Season") int temporada,
                          @JsonAlias("Episodes") List<EpisodeData> episodios) {
 }

@@ -60,5 +60,11 @@ public class Main {
                 .limit(5)
                 .forEach(e -> System.out.println(e.titulo() + " - " + e.avaliacao()));
 
+        List<Episode> episodes = seasons.stream()
+                .flatMap(s -> s.episodios().stream()
+                        .map(d -> new Episode(s.temporada(), d))
+                ).collect(Collectors.toList());
+
+        episodes.forEach(System.out::println);
     }
 }
