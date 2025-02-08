@@ -8,11 +8,11 @@ import java.net.http.HttpResponse;
 
 public class ApiConsumer {
 
-    public String getData(String endereco) {
+    public String getData(String address) {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endereco))
+                .uri(URI.create(address))
                 .build();
         HttpResponse<String> response = null;
 
