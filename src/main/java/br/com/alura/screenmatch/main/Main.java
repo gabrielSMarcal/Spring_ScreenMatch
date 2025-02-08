@@ -30,11 +30,24 @@ public class Main {
 
         List<SeasonData> seasons = new ArrayList<>();
         for (int i = 1; i <= data.totalTemporadas(); i++) {
+
             json = api.getData(ADDRESS + serieName.replace(" ", "+") +
                     "&Season=" + i + API_KEY);
             SeasonData season = conversor.getData(json, SeasonData.class);
             seasons.add(season);
         }
         seasons.forEach(System.out::println);
+        System.out.println("*****************************************************************************************");
+
+//        for (int i = 0; i < data.totalTemporadas(); i++) {
+//
+//            List<EpisodeData> seasonEpisodes = seasons.get(i).episodios();
+//            for (int j = 0; j < seasonEpisodes.size(); j++) {
+//                System.out.println(seasonEpisodes.get(j).titulo());
+//            }
+//        }
+
+        // Lambda expression
+        seasons.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
     }
 }
