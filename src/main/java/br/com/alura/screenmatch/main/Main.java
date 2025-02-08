@@ -3,10 +3,8 @@ package br.com.alura.screenmatch.main;
 import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.service.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -19,46 +17,48 @@ public class Main {
 
     public void menu() {
 
-//        System.out.println("Bem-vindo ao Screen Match!");
-//        System.out.println("*****************************************************************************************");
-//        System.out.println("Digite o nome da série que deseja buscar:");
+        System.out.println("Bem-vindo ao Screen Match!");
+        System.out.println("*****************************************************************************************");
+        System.out.println("Digite o nome da série que deseja buscar:");
+
+        var serieName = scanner.nextLine();
+        var json = api.getData(ADDRESS + serieName.replace(" ", "+") + API_KEY);
+        var data = conversor.getData(json, SerieData.class);
+        System.out.println(data);
+        System.out.println("*****************************************************************************************");
+
+        List<SeasonData> seasons = new ArrayList<>();
+        for (int i = 1; i <= data.totalTemporadas(); i++) {
+
+            json = api.getData(ADDRESS + serieName.replace(" ", "+") +
+                    "&Season=" + i + API_KEY);
+            SeasonData season = conversor.getData(json, SeasonData.class);
+            seasons.add(season);
+        }
+        seasons.forEach(System.out::println);
+        System.out.println("*****************************************************************************************");
+
+//        for (int i = 0; i < data.totalTemporadas(); i++) {
 //
-//        var serieName = scanner.nextLine();
-//        var json = api.getData(ADDRESS + serieName.replace(" ", "+") + API_KEY);
-//        var data = conversor.getData(json, SerieData.class);
-//        System.out.println(data);
-//        System.out.println("*****************************************************************************************");
-//
-//        List<SeasonData> seasons = new ArrayList<>();
-//        for (int i = 1; i <= data.totalTemporadas(); i++) {
-//
-//            json = api.getData(ADDRESS + serieName.replace(" ", "+") +
-//                    "&Season=" + i + API_KEY);
-//            SeasonData season = conversor.getData(json, SeasonData.class);
-//            seasons.add(season);
+//            List<EpisodeData> seasonEpisodes = seasons.get(i).episodios();
+//            for (int j = 0; j < seasonEpisodes.size(); j++) {
+//                System.out.println(seasonEpisodes.get(j).titulo());
+//            }
 //        }
-//        seasons.forEach(System.out::println);
-//        System.out.println("*****************************************************************************************");
-//
-////        for (int i = 0; i < data.totalTemporadas(); i++) {
-////
-////            List<EpisodeData> seasonEpisodes = seasons.get(i).episodios();
-////            for (int j = 0; j < seasonEpisodes.size(); j++) {
-////                System.out.println(seasonEpisodes.get(j).titulo());
-////            }
-////        }
-//
-//        // Lambda expression
-//        seasons.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
+        // Lambda expression
+        seasons.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
-        // Exemplo de Stream
-        List<String> nomes = Arrays.asList("Ana", "Maria", "João", "Pedro", "Henrique");
-        nomes.stream()
-                .sorted()
-                .limit(3)
-                .filter(n -> n.startsWith("J"))
-                .map(n -> n.toUpperCase())
-                .forEach(System.out::println);
+        List<EpisodeData> episodesData = seasons.stream()
+                .flatMap(s -> s.episodios().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("5 melhores episódios:");
+        episodesData.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(EpisodeData::avaliacao).reversed())
+                .limit(5)
+                .forEach(e -> System.out.println(e.titulo() + " - " + e.avaliacao()));
+
     }
 }
