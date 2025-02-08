@@ -3,6 +3,8 @@ package br.com.alura.screenmatch.main;
 import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.service.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,5 +68,21 @@ public class Main {
                 ).collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+
+        System.out.println("A partir de que ano deseja buscar episódios?");
+        var year = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate dateSearch = LocalDate.of(year, 1, 1);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        episodes.stream()
+                .filter(e -> e.getLaunch() != null && e.getLaunch().isAfter(dateSearch))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getSeason() +
+                                " - Episódio: " + e.getEpisodeNumber() +
+                                " - Data de lançamento: " + e.getLaunch().format(dtf)
+                ));
+
     }
 }
