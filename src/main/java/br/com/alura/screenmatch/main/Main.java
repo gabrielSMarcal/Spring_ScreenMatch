@@ -37,8 +37,8 @@ public class Main {
             SeasonData season = conversor.getData(json, SeasonData.class);
             seasons.add(season);
         }
-        seasons.forEach(System.out::println);
-        System.out.println("*****************************************************************************************");
+//        seasons.forEach(System.out::println);
+//        System.out.println("*****************************************************************************************");
 
 //        for (int i = 0; i < data.totalTemporadas(); i++) {
 //
@@ -72,19 +72,19 @@ public class Main {
                         .map(d -> new Episode(s.temporada(), d))
                 ).collect(Collectors.toList());
 
-        episodes.forEach(System.out::println);
-
-        System.out.println("Procure episódio pelo título:");
-        var titlePart = scanner.nextLine();
-        Optional<Episode> searchEpisode = episodes.stream()
-                .filter(e -> e.getTitle().toUpperCase().contains(titlePart.toUpperCase()))
-                .findFirst();
-
-        if (searchEpisode.isPresent()) {
-            System.out.println("Episódio encontrado: " + searchEpisode.get());
-        } else {
-            System.out.println("Episódio não encontrado.");
-        }
+//        episodes.forEach(System.out::println);
+//
+//        System.out.println("Procure episódio pelo título:");
+//        var titlePart = scanner.nextLine();
+//        Optional<Episode> searchEpisode = episodes.stream()
+//                .filter(e -> e.getTitle().toUpperCase().contains(titlePart.toUpperCase()))
+//                .findFirst();
+//
+//        if (searchEpisode.isPresent()) {
+//            System.out.println("Episódio encontrado: " + searchEpisode.get());
+//        } else {
+//            System.out.println("Episódio não encontrado.");
+//        }
 
 
 //        System.out.println("A partir de que ano deseja buscar episódios?");
@@ -101,6 +101,17 @@ public class Main {
 //                                " - Episódio: " + e.getEpisodeNumber() +
 //                                " - Data de lançamento: " + e.getLaunch().format(dtf)
 //                ));
+
+        System.out.println("*****************************************************************************************");
+
+        Map<Integer, Double> averageRating = episodes.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.groupingBy(
+                        Episode::getSeason,
+                        Collectors.averagingDouble(Episode::getRating)
+                ));
+
+        System.out.println("Média de avaliação por temporada:" + averageRating);
 
     }
 }

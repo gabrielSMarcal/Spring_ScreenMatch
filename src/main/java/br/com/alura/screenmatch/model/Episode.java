@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 public class Episode {
 
-    private int season;
+    private Integer season;
     private String title;
-    private int episodeNumber;
+    private Integer episodeNumber;
     private Double rating;
     private LocalDate launch;
 
