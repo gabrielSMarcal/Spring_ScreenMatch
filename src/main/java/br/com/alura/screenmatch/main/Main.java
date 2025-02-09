@@ -49,25 +49,30 @@ public class Main {
 //        }
 
         // Lambda expression
-        seasons.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
+        // seasons.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
         List<EpisodeData> episodesData = seasons.stream()
                 .flatMap(s -> s.episodios().stream())
                 .collect(Collectors.toList());
 
-        System.out.println("5 melhores episódios:");
+        System.out.println("\n10 melhores episódios:");
         episodesData.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primeiro filtro(N/A)" + e))
                 .sorted(Comparator.comparing(EpisodeData::avaliacao).reversed())
-                .limit(5)
-                .forEach(e -> System.out.println(e.titulo() + " - " + e.avaliacao()));
+                .peek(e -> System.out.println("Ordenação: " + e))
+                .limit(10)
+                .peek(e -> System.out.println("Limitação: " + e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Mapeamento: " + e))
+                .forEach(System.out::println);
 
         List<Episode> episodes = seasons.stream()
                 .flatMap(s -> s.episodios().stream()
                         .map(d -> new Episode(s.temporada(), d))
                 ).collect(Collectors.toList());
 
-        episodes.forEach(System.out::println);
+        // episodes.forEach(System.out::println);
 
         System.out.println("A partir de que ano deseja buscar episódios?");
         var year = scanner.nextInt();
