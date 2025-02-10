@@ -70,7 +70,7 @@ public class Main {
         System.out.println("Digite o nome da série para busca: ");
 
         var nomeSerie = leitura.nextLine();
-        var json = api.getDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
+        var json = api.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
         DadosSerie dado = conversor.getDados(json, DadosSerie.class);
         return dado;
     }
@@ -82,7 +82,7 @@ public class Main {
 
         for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
 
-            var json = api.getDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
+            var json = api.obterDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
             DadosTemporada dadosTemporada = conversor.getDados(json, DadosTemporada.class);
             temporadas.add(dadosTemporada);
         }
