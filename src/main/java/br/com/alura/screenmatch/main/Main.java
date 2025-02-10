@@ -58,13 +58,9 @@ public class Main {
         System.out.println("\n10 melhores episódios:");
         episodesData.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
-                .peek(e -> System.out.println("Primeiro filtro(N/A)" + e))
                 .sorted(Comparator.comparing(EpisodeData::avaliacao).reversed())
-                .peek(e -> System.out.println("Ordenação: " + e))
                 .limit(10)
-                .peek(e -> System.out.println("Limitação: " + e))
                 .map(e -> e.titulo().toUpperCase())
-                .peek(e -> System.out.println("Mapeamento: " + e))
                 .forEach(System.out::println);
 
         List<Episode> episodes = seasons.stream()
