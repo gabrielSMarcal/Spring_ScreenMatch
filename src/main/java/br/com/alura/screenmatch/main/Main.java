@@ -4,8 +4,10 @@ import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.service.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -16,7 +18,7 @@ public class Main {
     private ConverterDados conversor = new ConverterDados();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=987702fa";
-    private List<DadosSerie> series = new ArrayList<>();
+    private List<DadosSerie> dadosSeries = new ArrayList<>();
 
     public void menu() {
 
@@ -25,9 +27,7 @@ public class Main {
         while (opcao != 0) {
 
             var menu = """
-                
-                Bem vindo ao ScreenMatch!
-                
+                                
                 1 - Buscar séries
                 2 - Buscar episódios
                 3 - Listar séries buscadas
@@ -47,7 +47,7 @@ public class Main {
                     episodioProcuradoPorSerie();
                     break;
                 case 3:
-                    listasSeriesProcuradas();
+                    listarSeriesProcuradas();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -61,7 +61,7 @@ public class Main {
     private void procurarSerieWeb() {
 
         DadosSerie dado = getDadosSerie();
-        series.add(dado);
+        dadosSeries.add(dado);
         System.out.println(dado);
     }
 
@@ -89,9 +89,14 @@ public class Main {
         temporadas.forEach(System.out::println);
     }
 
-    private void listasSeriesProcuradas() {
+    private void listarSeriesProcuradas() {
 
-        series.forEach(System.out::println);
+        List<Serie> series = dadosSeries.stream()
+                .map(d -> new Serie(d))
+                .collect(Collectors.toList());
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
     }
 
 

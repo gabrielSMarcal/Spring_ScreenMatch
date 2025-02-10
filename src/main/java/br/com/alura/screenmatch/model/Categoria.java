@@ -3,24 +3,24 @@ package br.com.alura.screenmatch.model;
 public enum Categoria {
 
     ACAO("Action"),
+    AVENTURA("Adventure"),
     COMEDIA("Comedy"),
+    CRIME("Crime"),
     DRAMA("Drama"),
-    CRIME("Crime");
+    FANTASIA("Fantasy"),
+    ROMANCE("Romance"),
+    THRILLER("Thriller");
 
     private String categoriaOmdb;
 
-    Categoria(String descricao) {
-        this.categoriaOmdb = descricao;
-    }
-
-    public String getCategoriaOmdb() {
-        return categoriaOmdb;
+    Categoria(String categoriaOmdb) {
+        this.categoriaOmdb = categoriaOmdb;
     }
 
     public static Categoria fromString(String text) {
 
         for (Categoria categoria : Categoria.values()) {
-            if (categoria.getCategoriaOmdb().equalsIgnoreCase(text)) {
+            if (categoria.categoriaOmdb.equalsIgnoreCase(text)) {
                 return categoria;
             }
         }
