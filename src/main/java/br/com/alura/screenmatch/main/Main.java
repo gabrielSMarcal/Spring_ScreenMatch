@@ -10,19 +10,19 @@ import java.util.Scanner;
 
 public class Main {
 
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner leitura = new Scanner(System.in);
 
-    private ApiConsumer api = new ApiConsumer();
-    private ConvertsData conversor = new ConvertsData();
-    private final String ADDRESS = "https://www.omdbapi.com/?t=";
+    private ConsumoApi api = new ConsumoApi();
+    private ConverterDados conversor = new ConverterDados();
+    private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=987702fa";
-    private List<SerieData> series = new ArrayList<>();
+    private List<DadosSerie> series = new ArrayList<>();
 
     public void menu() {
 
-        var option = -1;
+        var opcao = -1;
 
-        while (option != 0) {
+        while (opcao != 0) {
 
             var menu = """
                 
@@ -36,18 +36,18 @@ public class Main {
                 """;
 
             System.out.println(menu);
-            option = scanner.nextInt();
-            scanner.nextLine();
+            opcao = leitura.nextInt();
+            leitura.nextLine();
 
-            switch (option) {
+            switch (opcao) {
                 case 1:
-                    searchWebSerie();
+                    procurarSerieWeb();
                     break;
                 case 2:
-                    searchEpisodeBySerie();
+                    episodioProcuradoPorSerie();
                     break;
                 case 3:
-                    listSearchedSeries();
+                    listasSeriesProcuradas();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -58,38 +58,38 @@ public class Main {
         }
     }
 
-    private void searchWebSerie() {
+    private void procurarSerieWeb() {
 
-        SerieData data = getSerieData();
-        series.add(data);
-        System.out.println(data);
+        DadosSerie dado = getDadosSerie();
+        series.add(dado);
+        System.out.println(dado);
     }
 
-    private SerieData getSerieData() {
+    private DadosSerie getDadosSerie() {
 
         System.out.println("Digite o nome da série para busca: ");
 
-        var serieName = scanner.nextLine();
-        var json = api.getData(ADDRESS + serieName.replace(" ", "+") + API_KEY);
-        SerieData data = conversor.getData(json, SerieData.class);
-        return data;
+        var nomeSerie = leitura.nextLine();
+        var json = api.getDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
+        DadosSerie dado = conversor.getDados(json, DadosSerie.class);
+        return dado;
     }
 
-    private void searchEpisodeBySerie(){
+    private void episodioProcuradoPorSerie(){
 
-        SerieData serieData = getSerieData();
-        List<SeasonData> seasons = new ArrayList<>();
+        DadosSerie dadosSerie = getDadosSerie();
+        List<DadosTemporada> temporadas = new ArrayList<>();
 
-        for (int i = 1; i <= serieData.totalTemporadas(); i++) {
+        for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
 
-            var json = api.getData(ADDRESS + serieData.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
-            SeasonData dadosTemporada = conversor.getData(json, SeasonData.class);
-            seasons.add(dadosTemporada);
+            var json = api.getDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
+            DadosTemporada dadosTemporada = conversor.getDados(json, DadosTemporada.class);
+            temporadas.add(dadosTemporada);
         }
-        seasons.forEach(System.out::println);
+        temporadas.forEach(System.out::println);
     }
 
-    private void listSearchedSeries() {
+    private void listasSeriesProcuradas() {
 
         series.forEach(System.out::println);
     }
