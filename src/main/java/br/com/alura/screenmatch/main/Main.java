@@ -1,7 +1,9 @@
 package br.com.alura.screenmatch.main;
 
 import br.com.alura.screenmatch.model.*;
+import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +21,11 @@ public class Main {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=987702fa";
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+    private SerieRepository repositorio;
+
+    public Main(SerieRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public void menu() {
 
@@ -60,9 +67,10 @@ public class Main {
 
     private void procurarSerieWeb() {
 
-        DadosSerie dado = getDadosSerie();
-        dadosSeries.add(dado);
-        System.out.println(dado);
+        DadosSerie dados = getDadosSerie();
+        Serie serie = new Serie(dados);
+        repositorio.save(serie);
+        System.out.println(dados);
     }
 
     private DadosSerie getDadosSerie() {
