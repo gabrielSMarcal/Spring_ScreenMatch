@@ -20,6 +20,8 @@ public class Episodio {
     @ManyToOne
     private Serie serie;
 
+    public Episodio() {} // Padrão para JPA aceitar
+
     public Episodio(int seasonNumber, DadosEpisodio dadosEpisodio) {
 
         this.temporada = seasonNumber;

@@ -108,7 +108,7 @@ public class Main {
 
             List<Episodio> episodios = temporadas.stream()
                     .flatMap(d -> d.episodios().stream()
-                            .map(e -> new Episodio(d.temporada(), e)))
+                            .map(e -> new Episodio(d.numeroTemporada(), e)))
                     .collect(Collectors.toList());
 
             serieEncontrada.setEpisodios(episodios);
