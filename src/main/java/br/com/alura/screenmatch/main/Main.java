@@ -5,6 +5,7 @@ import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -36,7 +37,8 @@ public class Main {
                 2 - Buscar episódios
                 3 - Listar séries buscadas
                 4 - Buscar série por título
-                5 - Buscar séries por ator
+                5 - Mostrar 5 melhores séries
+                6 - Buscar séries por ator
                 
                 0 - Sair
                 """;
@@ -59,6 +61,9 @@ public class Main {
                     buscarSeriePorTitulo();
                     break;
                 case 5:
+                    top5Series();
+                    break;
+                case 6:
                     buscarSeriePorAtor();
                     break;
                 case 0:
@@ -142,6 +147,16 @@ public class Main {
                 s -> System.out.println("Série encontrada : " + s.getTitulo()),
                 () -> System.out.println("Série não encontrada")
         );
+    }
+
+    private void top5Series() {
+
+        List<Serie> seriesTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
+        AtomicInteger counter = new AtomicInteger(1); // Contador para mostrar a posição das séries
+
+        seriesTop.forEach(s -> {
+            System.out.println(counter.getAndIncrement() + "ª Série: " + s.getTitulo() + " | Avaliação: " + s.getAvaliacao());
+        });
     }
 
     private void buscarSeriePorAtor() {
