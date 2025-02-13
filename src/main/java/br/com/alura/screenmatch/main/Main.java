@@ -36,6 +36,7 @@ public class Main {
                 2 - Buscar episódios
                 3 - Listar séries buscadas
                 4 - Buscar série por título
+                5 - Buscar séries por ator
                 
                 0 - Sair
                 """;
@@ -56,6 +57,10 @@ public class Main {
                     break;
                 case 4:
                     buscarSeriePorTitulo();
+                    break;
+                case 5:
+                    buscarSeriePorAtor();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -64,8 +69,6 @@ public class Main {
             }
         }
     }
-
-
 
     private void procurarSerieWeb() {
 
@@ -135,12 +138,30 @@ public class Main {
         var nomeSerie = leitura.nextLine();
         Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
-        if (serieBuscada.isPresent()) {
-            System.out.println("Série encontrada: " + serieBuscada.get());
-        } else {
-            System.out.println("Série não encontrada");
-        }
+        serieBuscada.ifPresentOrElse(
+                s -> System.out.println("Série encontrada : " + s.getTitulo()),
+                () -> System.out.println("Série não encontrada")
+        );
     }
 
+    private void buscarSeriePorAtor() {
 
+        System.out.println("Digite o nome do ator para busca: ");
+        var nomeAtor = leitura.nextLine();
+
+        System.out.println("Avaliação mínima: ");
+        var notaSerie = leitura.nextDouble();
+
+        List<Serie> seriesEncontradas = repositorio.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual
+                (nomeAtor, notaSerie);
+
+        if (seriesEncontradas.isEmpty()) {
+            System.out.println("Nenhuma série encontrada para o ator informado");
+        } else {
+            System.out.println
+                    ("Séries que o ator " + nomeAtor + " participa com avaliação maior ou igual a " + notaSerie);
+            seriesEncontradas.forEach(s ->
+                    System.out.println("Série: " + s.getTitulo() + " | Avaliação: " + s.getAvaliacao()));
+        }
+    }
 }
