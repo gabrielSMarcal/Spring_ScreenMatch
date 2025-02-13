@@ -39,6 +39,7 @@ public class Main {
                 4 - Buscar série por título
                 5 - Mostrar 5 melhores séries
                 6 - Buscar séries por ator
+                7 - Buscar séries por gênero
                 
                 0 - Sair
                 """;
@@ -65,6 +66,9 @@ public class Main {
                     break;
                 case 6:
                     buscarSeriePorAtor();
+                    break;
+                case 7:
+                    buscarSeriePorGenero();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -178,5 +182,18 @@ public class Main {
             seriesEncontradas.forEach(s ->
                     System.out.println("Série: " + s.getTitulo() + " | Avaliação: " + s.getAvaliacao()));
         }
+    }
+
+    private void buscarSeriePorGenero() {
+
+        System.out.println("Digite o gênero/categoria da série para busca: ");
+        var nomeGenero = leitura.nextLine();
+
+        Categoria categoria = Categoria.fromStringPortugues(nomeGenero);
+        List<Serie> seriePorCategoria = repositorio.findByGenero(categoria);
+
+        System.out.println("Séries do gênero " + nomeGenero);
+        seriePorCategoria.forEach(s ->
+                System.out.println("Série: " + s.getTitulo()));
     }
 }
