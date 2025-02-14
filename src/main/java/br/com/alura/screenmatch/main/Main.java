@@ -40,6 +40,7 @@ public class Main {
                 5 - Mostrar 5 melhores séries
                 6 - Buscar séries por ator
                 7 - Buscar séries por gênero
+                8 - Filtrar Séries
                 
                 0 - Sair
                 """;
@@ -69,6 +70,9 @@ public class Main {
                     break;
                 case 7:
                     buscarSeriePorGenero();
+                    break;
+                case 8:
+                    filtrarSeriesPorTemporadaEAvaliacao();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -195,5 +199,20 @@ public class Main {
         System.out.println("Séries do gênero " + nomeGenero);
         seriePorCategoria.forEach(s ->
                 System.out.println("Série: " + s.getTitulo()));
+    }
+
+    private void filtrarSeriesPorTemporadaEAvaliacao(){
+
+        System.out.println("Filtrar séries de até quantas temporadas? ");
+        var totalTemporadas = leitura.nextInt();
+
+        System.out.println("Com avaliação a partir de que valor? ");
+        var avaliacao = leitura.nextDouble();
+
+        List<Serie> filtroSeries = repositorio
+                .seriesPorTemporadaEAvaliacao(totalTemporadas, avaliacao);
+        System.out.println("Séries filtradas: ");
+        filtroSeries.forEach(s ->
+                System.out.println(s.getTitulo() + "  | Avaliação: " + s.getAvaliacao()));
     }
 }
