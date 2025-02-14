@@ -33,16 +33,17 @@ public class Main {
 
             var menu = """
                                 
-                1 - Buscar séries
-                2 - Buscar episódios
-                3 - Listar séries buscadas
-                4 - Buscar série por título
-                5 - Mostrar 5 melhores séries
-                6 - Buscar séries por ator
-                7 - Buscar séries por gênero
-                8 - Filtrar séries
-                9 - Buscar episódio por trecho
+                01 - Buscar séries
+                02 - Buscar episódios
+                03 - Listar séries buscadas
+                04 - Buscar série por título
+                05 - Mostrar 5 melhores séries
+                06 - Buscar séries por ator
+                07 - Buscar séries por gênero
+                08 - Filtrar séries
+                09 - Buscar episódio por trecho
                 10 - Mostrar 5 melhores episódios
+                11 - Buscar episódio a partir de uma data 
                 
                 0 - Sair
                 """;
@@ -81,6 +82,9 @@ public class Main {
                     break;
                 case 10:
                     top5EpisodiosPorSerie();
+                    break;
+                case 11:
+                    buscarEpisodioAPartirDeUmaData();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -252,5 +256,26 @@ public class Main {
                             e.getNumeroEpisodio(), e.getTitulo(),
                             e.getAvaliacao()));
         }
+    }
+
+    private void buscarEpisodioAPartirDeUmaData() {
+
+        buscarSeriePorTitulo();
+        if (serieBusca.isPresent()) {
+
+            Serie serie = serieBusca.get();
+            System.out.println("Digite o ano de lançamento para busca: ");
+            var ano = leitura.nextInt();
+            leitura.nextLine();
+
+            List<Episodio> episodiosAno = repositorio.episodiosPorSerieEAno(serie, ano);
+            episodiosAno.forEach(e ->
+                    System.out.printf("Série: %s | Temporada %s | Episódio %s: %s | Data de Lançamento: %s\n",
+                            e.getSerie().getTitulo(), e.getTemporada(),
+                            e.getNumeroEpisodio(), e.getTitulo(),
+                            e.getDataLancamento()));
+        }
+
+
     }
 }
