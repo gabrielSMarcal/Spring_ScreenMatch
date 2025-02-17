@@ -25,6 +25,11 @@ public class SerieService {
         return dadosConversor(repositorio.findTop5ByOrderByAvaliacaoDesc());
     }
 
+    public List<SerieDTO> obterLancamentos() {
+
+        return dadosConversor(repositorio.findTop5ByOrderByEpisodiosDataLancamentoDesc());
+    }
+
     private List<SerieDTO> dadosConversor(List<Serie> series) {
 
         return series.stream()
@@ -32,4 +37,5 @@ public class SerieService {
                         s.getAvaliacao(), s.getGenero(), s.getAtores(), s.getPoster(), s.getSinopse()))
                 .collect(Collectors.toList());
     }
+
 }

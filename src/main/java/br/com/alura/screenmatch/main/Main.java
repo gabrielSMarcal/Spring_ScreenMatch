@@ -57,7 +57,7 @@ public class Main {
                     procurarSerieWeb();
                     break;
                 case 2:
-                    buscarEpisodioPorSerie();
+                    //buscarEpisodioPorSerie();
                     break;
                 case 3:
                     listarSeriesProcuradas();
@@ -116,11 +116,7 @@ public class Main {
         return dado;
     }
 
-    private void buscarEpisodioPorSerie(){
-
-        listarSeriesProcuradas();
-        System.out.println("Escolha uma série pelo nome: ");
-        var nomeSerie = leitura.nextLine();
+    public void buscarEpisodioPorSerie(String nomeSerie){
 
         Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
