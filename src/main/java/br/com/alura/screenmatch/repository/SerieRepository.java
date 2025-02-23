@@ -40,6 +40,4 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
             "GROUP BY s " +
             "ORDER BY MAX(e.dataLancamento) DESC LIMIT 5")
     List<Serie> encontrarEpisodiosMaisRecentes();
-
-    List<Serie> findTop5ByOrderByEpisodiosDataLancamentoDesc();
 }
