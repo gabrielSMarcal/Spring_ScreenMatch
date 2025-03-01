@@ -1,7 +1,6 @@
 package br.com.alura.screenmatch.dto;
 
-public record EpisodioDTO(Long id,
-                           String titulo,
-                           Integer temporada,
-                           Integer numeroEpisodio) {
+public record EpisodioDTO(Integer temporada,
+                          Integer numeroEpisodio,
+                          String titulo) {
 }
